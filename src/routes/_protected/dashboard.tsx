@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react'
-import { createFileRoute, getRouteApi, Link, useNavigate } from '@tanstack/react-router'
+import {
+  createFileRoute,
+  getRouteApi,
+  Link,
+  useNavigate,
+} from '@tanstack/react-router'
 import { Download, LogOut, Trash2, Upload } from 'lucide-react'
 
 import { Container, Main, Nav } from '@/components/ds'
@@ -95,9 +100,9 @@ function Dashboard() {
 
   return (
     <Main className="min-h-screen bg-background">
-      <Nav className="border-b">
+      <Nav className="border-b border-border/60 bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/75">
         <div className="flex items-center justify-between gap-4">
-          <Link to="/" className="font-mono text-sm">
+          <Link to="/" className="font-mono text-sm tracking-tight">
             vibe-cf
           </Link>
           <Button type="button" variant="ghost" onClick={onSignOut}>
@@ -107,19 +112,21 @@ function Dashboard() {
         </div>
       </Nav>
 
-      <Container className="space-y-8 py-8">
+      <Container className="space-y-6 py-6">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               {session.user.email}
             </p>
-            <h1 className="text-2xl font-medium tracking-tight">Dashboard</h1>
+            <h1 className="mt-1 text-xl font-medium tracking-tight">
+              Dashboard
+            </h1>
           </div>
         </div>
 
         <section className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-          <div className="rounded-lg border">
-            <div className="border-b px-4 py-3">
+          <div className="overflow-hidden rounded-lg border border-border/70 bg-card">
+            <div className="border-b border-border/70 px-4 py-3">
               <h2 className="text-sm font-medium">Private files</h2>
             </div>
 
@@ -136,7 +143,7 @@ function Dashboard() {
                 {files.map((file) => (
                   <li
                     key={file.id}
-                    className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3"
+                    className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3 transition-colors hover:bg-muted/45"
                   >
                     <div className="min-w-0">
                       <p className="truncate text-sm font-medium">{file.name}</p>
@@ -165,14 +172,17 @@ function Dashboard() {
             )}
           </div>
 
-          <form className="h-fit rounded-lg border p-4" onSubmit={onUpload}>
-            <label className="block space-y-2 text-sm">
+          <form
+            className="h-fit rounded-lg border border-border/70 bg-card p-4"
+            onSubmit={onUpload}
+          >
+            <label className="block space-y-1.5 text-sm">
               <span className="font-medium">Upload file</span>
               <input
                 required
                 name="file"
                 type="file"
-                className="block w-full rounded-md border border-input bg-background text-sm file:mr-3 file:h-9 file:border-0 file:bg-muted file:px-3 file:text-sm file:font-medium"
+                className="block w-full rounded-lg border border-input bg-background text-sm file:mr-3 file:h-9 file:border-0 file:bg-muted file:px-3 file:text-sm file:font-medium"
               />
             </label>
             <Button type="submit" className="mt-4 w-full">

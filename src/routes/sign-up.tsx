@@ -52,13 +52,13 @@ function SignUp() {
   }
 
   return (
-    <Center className="bg-background px-6">
-      <div className="w-full max-w-sm space-y-8">
+    <Center className="bg-background px-4">
+      <div className="w-full max-w-[360px] space-y-7">
         <div className="space-y-2">
-          <p className="font-mono text-xs uppercase text-muted-foreground">
+          <p className="font-mono text-xs uppercase tracking-wide text-muted-foreground">
             vibe-cf
           </p>
-          <h1 className="text-2xl font-medium tracking-tight">Create account</h1>
+          <h1 className="text-xl font-medium tracking-tight">Create account</h1>
         </div>
 
         <form className="space-y-4" onSubmit={onSubmit}>
@@ -72,7 +72,7 @@ function SignUp() {
           />
 
           {error ? (
-            <p className="rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+            <p className="rounded-lg border border-destructive/25 bg-destructive/5 px-3 py-2 text-sm text-destructive">
               {error}
             </p>
           ) : null}
@@ -109,14 +109,14 @@ function Field({
 }) {
   return (
     <label className="block space-y-1.5 text-sm">
-      <span className="text-muted-foreground">{label}</span>
+      <span className="font-medium text-foreground">{label}</span>
       <input
         required
         name={name}
         type={type}
         autoComplete={autoComplete}
         minLength={type === 'password' ? 8 : undefined}
-        className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm outline-none ring-offset-background transition focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
+        className="h-9 w-full rounded-lg border border-input bg-card px-3 text-sm outline-none transition placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
       />
     </label>
   )

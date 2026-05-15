@@ -47,13 +47,13 @@ export const Route = createRootRoute({
 
 function AppError({ reset }: ErrorComponentProps) {
   return (
-    <Center className="px-6 text-center">
+    <Center className="bg-background px-4 text-center">
       <div className="max-w-sm space-y-6">
         <div className="space-y-2">
           <p className="font-mono text-xs uppercase tracking-wide text-muted-foreground">
             Error
           </p>
-          <h1 className="text-2xl font-medium tracking-tight">
+          <h1 className="text-xl font-medium tracking-tight">
             Something went wrong
           </h1>
           <p className="text-sm leading-relaxed text-muted-foreground">
@@ -75,13 +75,13 @@ function AppError({ reset }: ErrorComponentProps) {
 
 function AppNotFound(_props: NotFoundRouteProps) {
   return (
-    <Center className="px-6 text-center">
+    <Center className="bg-background px-4 text-center">
       <div className="max-w-sm space-y-6">
         <div className="space-y-2">
           <p className="font-mono text-xs uppercase tracking-wide text-muted-foreground">
             404
           </p>
-          <h1 className="text-2xl font-medium tracking-tight">
+          <h1 className="text-xl font-medium tracking-tight">
             Page not found
           </h1>
           <p className="text-sm leading-relaxed text-muted-foreground">

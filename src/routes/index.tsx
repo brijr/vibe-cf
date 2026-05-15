@@ -13,21 +13,26 @@ export const Route = createFileRoute('/')({ component: Home })
 
 function Home() {
   return (
-    <Main className="flex min-h-screen flex-col justify-center px-6 py-16">
+    <Main className="flex min-h-screen flex-col justify-center bg-background px-4 py-12">
       <Container size="2xl" className="p-0">
-        <h1 className="font-mono text-sm tracking-tight">{APP_TITLE}</h1>
+        <p className="font-mono text-xs uppercase tracking-wide text-muted-foreground">
+          Cloudflare starter
+        </p>
+        <h1 className="mt-2 text-xl font-medium tracking-tight">
+          {APP_TITLE}
+        </h1>
 
-        <p className="text-muted-foreground mt-8 max-w-md text-sm leading-relaxed">
+        <p className="mt-6 max-w-md text-sm leading-6 text-muted-foreground">
           {APP_DESCRIPTION}
         </p>
 
-        <ul className="text-muted-foreground mt-8 space-y-1 text-sm">
+        <ul className="mt-6 space-y-1 text-sm text-muted-foreground">
           {APP_STACK.map((item) => (
             <li key={item}>{item}</li>
           ))}
         </ul>
 
-        <div className="mt-12 flex flex-wrap gap-2">
+        <div className="mt-10 flex flex-wrap gap-2">
           <Button asChild>
             <Link to="/dashboard">Dashboard</Link>
           </Button>

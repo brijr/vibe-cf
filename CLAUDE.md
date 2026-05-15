@@ -85,6 +85,9 @@ Design-system rules:
 
 - Keep `src/components/ds.tsx` pure: layout primitives, prose, and its own first-exported `cn()`.
 - Do not add app UI primitives such as auth shells, fields, cards, or panels until repetition proves the need.
+- Preserve the Apple-adjacent product baseline: native system font, restrained type scale, quiet borders, semantic neutral tokens, and minimal shadow.
+- Keep product UI headings at `text-xl` or smaller outside `Prose`; use spacing and weight for hierarchy.
+- Keep button touch targets at `h-9` or larger.
 - Keep `Nav` and `Container` on the same size scale so headers align with page content.
 - Use `Prose` for rendered content and AI/docs output, not app forms or dashboards.
 - Keep shadcn components using `@/lib/utils`; do not churn those imports just because `ds.tsx` also exports `cn`.
