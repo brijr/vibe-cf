@@ -49,12 +49,7 @@ function SignIn() {
   return (
     <Center className="bg-background p-3 sm:p-4">
       <div className="w-full max-w-[360px] rounded-lg bg-card p-5">
-        <div className="space-y-2">
-          <p className="font-mono text-xs uppercase tracking-wide text-muted-foreground">
-            vibe-cf
-          </p>
-          <h1 className="text-xl font-medium tracking-tight">Sign in</h1>
-        </div>
+        <h1 className="text-xl font-medium tracking-tight">Sign in</h1>
 
         <form className="mt-7 space-y-4" onSubmit={onSubmit}>
           <Field label="Email" name="email" type="email" autoComplete="email" />
