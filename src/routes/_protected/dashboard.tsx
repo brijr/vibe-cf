@@ -217,8 +217,8 @@ function Dashboard() {
               <div className="my-7 border-t border-dashed border-border/70" />
 
               <form className="rounded-lg bg-muted/80 p-4" onSubmit={onUpload}>
-                <label className="block space-y-1.5 text-sm">
-                  <span className="font-medium">Upload file</span>
+                <label className="grid gap-1.5 text-sm">
+                  <span className="font-medium leading-none">Upload file</span>
                   <input
                     required
                     name="file"

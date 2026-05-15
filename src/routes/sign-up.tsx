@@ -108,8 +108,8 @@ function Field({
   autoComplete: string
 }) {
   return (
-    <label className="block space-y-1.5 text-sm">
-      <span className="font-medium text-foreground">{label}</span>
+    <label className="grid gap-1.5 text-sm">
+      <span className="font-medium leading-none text-foreground">{label}</span>
       <input
         required
         name={name}
