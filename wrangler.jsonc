@@ -5,15 +5,27 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "vibe-cf",
-	"compatibility_date": "2025-09-02",
+	"compatibility_date": "2026-05-15",
 	"compatibility_flags": [
 		"nodejs_compat"
 	],
 	"main": "@tanstack/react-start/server-entry",
+	"workers_dev": true,
 	"observability": {
 		"enabled": true
 	},
-	"upload_source_maps": true
+	"upload_source_maps": true,
+	"vars": {
+		"APP_ENV": "production"
+	},
+	"env": {
+		"staging": {
+			"workers_dev": true,
+			"vars": {
+				"APP_ENV": "staging"
+			}
+		}
+	}
 	/**
 	 * Smart Placement
 	 * https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
