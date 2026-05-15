@@ -45,7 +45,7 @@ pnpm deploy
 `src/components/ds.tsx` is the single-file layout/prose contract for agents and humans. It exports `cn`, `Main`, `Section`, `Container`, `Center`, `Nav`, and `Prose`.
 
 - Keep it pure: no auth shells, form fields, panels, data fetching, hooks, or app state.
-- The visual baseline is Apple-adjacent product UI: native system font, restrained type scale, quiet borders, semantic neutral tokens, and minimal shadow.
+- The visual baseline is a quiet paper workspace: gray app chrome, white working surfaces, pale inset tiles, tiny uppercase labels, icon-led action rows, restrained type, and almost no shadow.
 - `Container` and `Nav` share the same `size` scale so page content and navigation can align exactly.
 - `Section` intentionally uses restrained padding for app-first screens.
 - `Prose` covers core rendered content and AI/docs output; do not wrap app UI in it.

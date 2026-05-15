@@ -5,7 +5,7 @@ import {
   Link,
   useNavigate,
 } from '@tanstack/react-router'
-import { Download, LogOut, Trash2, Upload } from 'lucide-react'
+import { Download, LogOut, RefreshCw, Trash2, Upload } from 'lucide-react'
 
 import { Container, Main, Nav } from '@/components/ds'
 import { Button } from '@/components/ui/button'
@@ -99,103 +99,187 @@ function Dashboard() {
   }
 
   return (
-    <Main className="min-h-screen bg-background">
-      <Nav className="border-b border-border/60 bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/75">
-        <div className="flex items-center justify-between gap-4">
-          <Link to="/" className="font-mono text-sm tracking-tight">
-            vibe-cf
-          </Link>
-          <Button type="button" variant="ghost" onClick={onSignOut}>
-            <LogOut aria-hidden="true" />
-            Sign out
-          </Button>
-        </div>
-      </Nav>
-
-      <Container className="space-y-6 py-6">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="text-xs text-muted-foreground">
-              {session.user.email}
-            </p>
-            <h1 className="mt-1 text-xl font-medium tracking-tight">
-              Dashboard
-            </h1>
+    <Main className="min-h-screen bg-background p-3 sm:p-4">
+      <div className="mx-auto min-h-[calc(100vh-1.5rem)] max-w-5xl rounded-lg bg-card sm:min-h-[calc(100vh-2rem)]">
+        <Nav
+          className="border-b border-border/60 bg-card"
+          containerClassName="px-4 py-3 sm:px-5"
+        >
+          <div className="flex items-center justify-between gap-4">
+            <Link to="/" className="font-mono text-sm tracking-tight">
+              vibe-cf
+            </Link>
+            <Button
+              type="button"
+              variant="ghost"
+              className="px-2"
+              onClick={onSignOut}
+            >
+              <LogOut aria-hidden="true" />
+              Sign out
+            </Button>
           </div>
-        </div>
+        </Nav>
 
-        <section className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-          <div className="overflow-hidden rounded-lg border border-border/70 bg-card">
-            <div className="border-b border-border/70 px-4 py-3">
-              <h2 className="text-sm font-medium">Private files</h2>
+        <Container className="p-4 sm:p-5">
+          <section className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
+            <div className="min-w-0">
+              <div>
+                <p className="max-w-full truncate text-xs text-muted-foreground">
+                  {session.user.email}
+                </p>
+                <h1 className="mt-1 text-xl font-medium tracking-tight">
+                  Dashboard
+                </h1>
+              </div>
+
+              <div className="mt-8">
+                <div className="grid grid-cols-[minmax(0,1fr)_5rem_6rem] border-b border-border/60 pb-2 text-right font-mono text-[0.68rem] uppercase tracking-wide text-muted-foreground">
+                  <span className="text-left">File</span>
+                  <span>Type</span>
+                  <span>Size</span>
+                </div>
+
+                {isLoading ? (
+                  <p className="py-6 text-sm text-muted-foreground">
+                    Loading files...
+                  </p>
+                ) : files.length === 0 ? (
+                  <div className="mt-3 rounded-lg bg-muted/80 p-4">
+                    <p className="text-sm font-medium">No files yet.</p>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      Upload through the private R2 route to create object
+                      metadata in D1.
+                    </p>
+                  </div>
+                ) : (
+                  <ul className="divide-y divide-border/60">
+                    {files.map((file) => (
+                      <li
+                        key={file.id}
+                        className="grid grid-cols-[minmax(0,1fr)_5rem_6rem] items-center gap-3 py-3 text-right transition-colors hover:bg-muted/45"
+                      >
+                        <div className="min-w-0 text-left">
+                          <p className="truncate text-sm font-medium">
+                            {file.name}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {new Date(file.createdAt).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <p className="truncate text-xs text-muted-foreground">
+                          {file.contentType || 'file'}
+                        </p>
+                        <div className="flex items-center justify-end gap-1">
+                          <span className="mr-1 text-xs text-muted-foreground">
+                            {formatBytes(file.size)}
+                          </span>
+                          <Button asChild size="icon" variant="ghost">
+                            <a href={`/api/files/${file.id}`}>
+                              <Download aria-label={`Download ${file.name}`} />
+                            </a>
+                          </Button>
+                          <Button
+                            type="button"
+                            size="icon"
+                            variant="ghost"
+                            onClick={() => void onDelete(file.id)}
+                          >
+                            <Trash2 aria-label={`Delete ${file.name}`} />
+                          </Button>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
             </div>
 
-            {isLoading ? (
-              <p className="px-4 py-6 text-sm text-muted-foreground">
-                Loading files...
-              </p>
-            ) : files.length === 0 ? (
-              <p className="px-4 py-6 text-sm text-muted-foreground">
-                No files yet.
-              </p>
-            ) : (
-              <ul className="divide-y">
-                {files.map((file) => (
-                  <li
-                    key={file.id}
-                    className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3 transition-colors hover:bg-muted/45"
-                  >
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-medium">{file.name}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {formatBytes(file.size)} · {file.contentType}
-                      </p>
-                    </div>
-                    <div className="flex gap-1">
-                      <Button asChild size="icon" variant="ghost">
-                        <a href={`/api/files/${file.id}`}>
-                          <Download aria-label={`Download ${file.name}`} />
-                        </a>
-                      </Button>
-                      <Button
-                        type="button"
-                        size="icon"
-                        variant="ghost"
-                        onClick={() => void onDelete(file.id)}
-                      >
-                        <Trash2 aria-label={`Delete ${file.name}`} />
-                      </Button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+            <aside className="border-t border-border/60 pt-6 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-12">
+              <div className="space-y-2">
+                <DashboardAction onClick={() => void loadFiles()}>
+                  <RefreshCw aria-hidden="true" className="size-4" />
+                  Refresh files
+                </DashboardAction>
+                <a
+                  href="/api/files"
+                  className="flex h-9 items-center gap-3 text-sm transition-colors hover:text-muted-foreground"
+                >
+                  <Download aria-hidden="true" className="size-4" />
+                  Files API
+                </a>
+                <DashboardAction onClick={onSignOut}>
+                  <LogOut aria-hidden="true" className="size-4" />
+                  Sign out
+                </DashboardAction>
+              </div>
 
-          <form
-            className="h-fit rounded-lg border border-border/70 bg-card p-4"
-            onSubmit={onUpload}
-          >
-            <label className="block space-y-1.5 text-sm">
-              <span className="font-medium">Upload file</span>
-              <input
-                required
-                name="file"
-                type="file"
-                className="block w-full rounded-lg border border-input bg-background text-sm file:mr-3 file:h-9 file:border-0 file:bg-muted file:px-3 file:text-sm file:font-medium"
-              />
-            </label>
-            <Button type="submit" className="mt-4 w-full">
-              <Upload aria-hidden="true" />
-              Upload
-            </Button>
-            {status ? (
-              <p className="mt-3 text-sm text-muted-foreground">{status}</p>
-            ) : null}
-          </form>
-        </section>
-      </Container>
+              <div className="my-7 border-t border-dashed border-border/70" />
+
+              <form className="rounded-lg bg-muted/80 p-4" onSubmit={onUpload}>
+                <label className="block space-y-1.5 text-sm">
+                  <span className="font-medium">Upload file</span>
+                  <input
+                    required
+                    name="file"
+                    type="file"
+                    className="block w-full rounded-md border border-transparent bg-card text-sm file:mr-3 file:h-9 file:border-0 file:bg-card file:px-3 file:text-sm file:font-medium"
+                  />
+                </label>
+                <Button type="submit" className="mt-4 w-full">
+                  <Upload aria-hidden="true" />
+                  Upload
+                </Button>
+              </form>
+
+              <div className="mt-7">
+                <p className="font-mono text-[0.68rem] uppercase tracking-wide text-muted-foreground">
+                  Activity
+                </p>
+                <ol className="mt-4 space-y-4 border-l border-border/70 pl-4">
+                  <ActivityItem
+                    title="Session active"
+                    detail={session.user.email}
+                  />
+                  <ActivityItem
+                    title={status ?? 'Storage ready'}
+                    detail={`${files.length} private ${files.length === 1 ? 'object' : 'objects'}`}
+                  />
+                </ol>
+              </div>
+            </aside>
+          </section>
+        </Container>
+      </div>
     </Main>
+  )
+}
+
+function DashboardAction({
+  children,
+  onClick,
+}: {
+  children: React.ReactNode
+  onClick: () => void | Promise<void>
+}) {
+  return (
+    <button
+      type="button"
+      className="flex h-9 w-full items-center gap-3 text-sm transition-colors hover:text-muted-foreground"
+      onClick={() => void onClick()}
+    >
+      {children}
+    </button>
+  )
+}
+
+function ActivityItem({ detail, title }: { detail: string; title: string }) {
+  return (
+    <li className="relative min-w-0">
+      <span className="absolute -left-[1.1875rem] top-1.5 size-2 rounded-full bg-border ring-4 ring-card" />
+      <p className="truncate text-sm leading-none">{title}</p>
+      <p className="mt-1 truncate text-xs text-muted-foreground">{detail}</p>
+    </li>
   )
 }
 

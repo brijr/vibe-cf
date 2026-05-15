@@ -52,8 +52,8 @@ function SignUp() {
   }
 
   return (
-    <Center className="bg-background px-4">
-      <div className="w-full max-w-[360px] space-y-7">
+    <Center className="bg-background p-3 sm:p-4">
+      <div className="w-full max-w-[360px] rounded-lg bg-card p-5">
         <div className="space-y-2">
           <p className="font-mono text-xs uppercase tracking-wide text-muted-foreground">
             vibe-cf
@@ -61,7 +61,7 @@ function SignUp() {
           <h1 className="text-xl font-medium tracking-tight">Create account</h1>
         </div>
 
-        <form className="space-y-4" onSubmit={onSubmit}>
+        <form className="mt-7 space-y-4" onSubmit={onSubmit}>
           <Field label="Name" name="name" type="text" autoComplete="name" />
           <Field label="Email" name="email" type="email" autoComplete="email" />
           <Field
@@ -82,7 +82,7 @@ function SignUp() {
           </Button>
         </form>
 
-        <p className="text-sm text-muted-foreground">
+        <p className="mt-7 text-sm text-muted-foreground">
           Already have an account?{' '}
           <Link
             to="/sign-in"
@@ -116,7 +116,7 @@ function Field({
         type={type}
         autoComplete={autoComplete}
         minLength={type === 'password' ? 8 : undefined}
-        className="h-9 w-full rounded-lg border border-input bg-card px-3 text-sm outline-none transition placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
+        className="h-9 w-full rounded-md border border-transparent bg-muted/80 px-3 text-sm outline-none transition placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:bg-card focus-visible:ring-2 focus-visible:ring-ring/30"
       />
     </label>
   )

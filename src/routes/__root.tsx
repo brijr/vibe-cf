@@ -47,8 +47,8 @@ export const Route = createRootRoute({
 
 function AppError({ reset }: ErrorComponentProps) {
   return (
-    <Center className="bg-background px-4 text-center">
-      <div className="max-w-sm space-y-6">
+    <Center className="bg-background p-3 text-center sm:p-4">
+      <div className="max-w-sm rounded-lg bg-card p-5">
         <div className="space-y-2">
           <p className="font-mono text-xs uppercase tracking-wide text-muted-foreground">
             Error
@@ -60,7 +60,7 @@ function AppError({ reset }: ErrorComponentProps) {
             The request failed before the page could finish rendering.
           </p>
         </div>
-        <div className="flex justify-center gap-2">
+        <div className="mt-6 flex justify-center gap-2">
           <Button type="button" variant="outline" onClick={reset}>
             Retry
           </Button>
@@ -75,8 +75,8 @@ function AppError({ reset }: ErrorComponentProps) {
 
 function AppNotFound(_props: NotFoundRouteProps) {
   return (
-    <Center className="bg-background px-4 text-center">
-      <div className="max-w-sm space-y-6">
+    <Center className="bg-background p-3 text-center sm:p-4">
+      <div className="max-w-sm rounded-lg bg-card p-5">
         <div className="space-y-2">
           <p className="font-mono text-xs uppercase tracking-wide text-muted-foreground">
             404
@@ -88,7 +88,7 @@ function AppNotFound(_props: NotFoundRouteProps) {
             There is no route for this URL.
           </p>
         </div>
-        <Button asChild>
+        <Button asChild className="mt-6">
           <Link to="/">Home</Link>
         </Button>
       </div>

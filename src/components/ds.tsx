@@ -58,7 +58,7 @@ export const Container = ({
   size = '5xl',
 }: ContainerProps) => (
   <div
-    className={cn(containerSizes[size], 'mx-auto w-full p-4 sm:p-6', className)}
+    className={cn(containerSizes[size], 'mx-auto w-full p-4 sm:p-5', className)}
     id={id}
     style={style}
   >
@@ -117,12 +117,12 @@ export const Prose = ({
     <Component
       className={cn(
         'text-base leading-7 antialiased',
-        '[&_h1]:text-balance [&_h1]:text-4xl [&_h1]:font-medium [&_h1]:tracking-tight sm:[&_h1]:text-5xl',
-        '[&_h2]:text-balance [&_h2]:text-3xl [&_h2]:font-medium [&_h2]:tracking-tight sm:[&_h2]:text-4xl',
-        '[&_h3]:text-balance [&_h3]:text-2xl [&_h3]:font-medium [&_h3]:tracking-tight sm:[&_h3]:text-3xl',
-        '[&_h4]:text-balance [&_h4]:text-xl [&_h4]:font-medium [&_h4]:tracking-tight sm:[&_h4]:text-2xl',
-        '[&_h5]:text-balance [&_h5]:text-lg [&_h5]:font-medium [&_h5]:tracking-tight sm:[&_h5]:text-xl',
-        '[&_h6]:text-balance [&_h6]:text-base [&_h6]:font-medium [&_h6]:tracking-tight sm:[&_h6]:text-lg',
+        '[&_h1]:text-balance [&_h1]:text-xl [&_h1]:font-medium [&_h1]:tracking-tight',
+        '[&_h2]:text-balance [&_h2]:text-lg [&_h2]:font-medium [&_h2]:tracking-tight',
+        '[&_h3]:text-balance [&_h3]:text-base [&_h3]:font-medium [&_h3]:tracking-tight',
+        '[&_h4]:text-balance [&_h4]:text-base [&_h4]:font-medium [&_h4]:tracking-tight',
+        '[&_h5]:text-balance [&_h5]:text-sm [&_h5]:font-medium [&_h5]:tracking-tight',
+        '[&_h6]:text-balance [&_h6]:text-sm [&_h6]:font-medium [&_h6]:tracking-tight',
         '[&_p]:text-pretty [&_p]:text-base',
         '[&_strong]:font-semibold [&_em]:italic [&_small]:text-sm [&_small]:leading-snug',
         '[&_a:not(h1_a,h2_a,h3_a,h4_a,h5_a,h6_a)]:text-primary [&_a:not(h1_a,h2_a,h3_a,h4_a,h5_a,h6_a)]:underline-offset-4 [&_a:not(h1_a,h2_a,h3_a,h4_a,h5_a,h6_a)]:transition [&_a:not(h1_a,h2_a,h3_a,h4_a,h5_a,h6_a)]:hover:underline [&_a:not(h1_a,h2_a,h3_a,h4_a,h5_a,h6_a)]:focus-visible:outline-none [&_a:not(h1_a,h2_a,h3_a,h4_a,h5_a,h6_a)]:focus-visible:ring-2 [&_a:not(h1_a,h2_a,h3_a,h4_a,h5_a,h6_a)]:focus-visible:ring-ring/50',
