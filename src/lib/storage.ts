@@ -5,8 +5,14 @@ import { and, desc, eq } from 'drizzle-orm'
 import { getDb } from '@/db/client'
 import { fileObject, member } from '@/db/schema'
 import { getRuntimeEnv } from '@/lib/runtime-env'
+import {
+  createDownloadHeaders,
+  sanitizeFileName,
+  UploadValidationError,
+  validateUploadFile,
+} from '@/lib/storage-policy'
 
-const MAX_UPLOAD_BYTES = 10 * 1024 * 1024
+export { createDownloadHeaders, sanitizeFileName, validateUploadFile }
 
 export type OrganizationContext = {
   organizationId: string
@@ -81,14 +87,14 @@ export async function createFileObject({
   organizationId: string
   userId: string
 }) {
-  if (file.size <= 0) {
-    throw new Response('Upload must include a non-empty file.', { status: 400 })
-  }
+  try {
+    validateUploadFile(file)
+  } catch (error) {
+    if (error instanceof UploadValidationError) {
+      throw new Response(error.message, { status: error.status })
+    }
 
-  if (file.size > MAX_UPLOAD_BYTES) {
-    throw new Response('Upload exceeds the 10 MB starter limit.', {
-      status: 413,
-    })
+    throw error
   }
 
   const now = new Date()
@@ -153,22 +159,4 @@ export async function deleteFileRecord(fileId: string, organizationId: string) {
   await getDb().delete(fileObject).where(eq(fileObject.id, fileId))
 
   return record
-}
-
-function sanitizeFileName(name: string) {
-  return name
-    .replace(/[/\\?%*:|"<>]/g, '-')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .slice(0, 120)
-}
-
-export function createDownloadHeaders(record: {
-  name: string
-  contentType: string
-}) {
-  return {
-    'content-type': record.contentType,
-    'content-disposition': `attachment; filename="${record.name.replace(/"/g, '')}"`,
-  }
 }

@@ -28,6 +28,9 @@ jobs:
       - name: Verify
         run: pnpm run check
 
+      - name: Smoke local app
+        run: pnpm run test:smoke
+
       - name: Validate Worker package
         run: pnpm run deploy:dry-run
 

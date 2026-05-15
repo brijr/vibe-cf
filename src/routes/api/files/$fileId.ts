@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 import { getSessionForRequest } from '@/lib/auth.functions'
+import { handleDeleteFile, handleDownloadFile } from '@/lib/files-api'
 
 export const Route = createFileRoute('/api/files/$fileId')({
   server: {
@@ -13,43 +14,20 @@ export const Route = createFileRoute('/api/files/$fileId')({
         request: Request
       }) => {
         const session = await getSessionForRequest(request)
-
-        if (!session) {
-          return Response.json({ error: 'Unauthorized' }, { status: 401 })
-        }
-
-        const {
-          createDownloadHeaders,
-          getFileRecord,
-          getOrganizationForUser,
-        } = await import('@/lib/storage')
-        const organization = await getOrganizationForUser(session.user.id)
-
-        if (!organization) {
-          return Response.json({ error: 'No organization found.' }, { status: 409 })
-        }
-
-        const record = await getFileRecord(
-          params.fileId,
-          organization.organizationId
+        const { getFileRecord, getOrganizationForUser } = await import(
+          '@/lib/storage'
         )
-
-        if (!record) {
-          return Response.json({ error: 'File not found.' }, { status: 404 })
-        }
-
         const { getRuntimeEnv } = await import('@/lib/runtime-env')
-        const object = await getRuntimeEnv().OBJECTS.get(record.key)
 
-        if (!object) {
-          return Response.json({ error: 'Object not found.' }, { status: 404 })
-        }
-
-        const headers = new Headers(createDownloadHeaders(record))
-        object.writeHttpMetadata(headers)
-        headers.set('etag', object.httpEtag)
-
-        return new Response(object.body, { headers })
+        return handleDownloadFile({
+          fileId: params.fileId,
+          session,
+          dependencies: {
+            getOrganizationForUser,
+            getFileRecord,
+            getObject: (key) => getRuntimeEnv().OBJECTS.get(key),
+          },
+        })
       },
       DELETE: async ({
         params,
@@ -59,30 +37,18 @@ export const Route = createFileRoute('/api/files/$fileId')({
         request: Request
       }) => {
         const session = await getSessionForRequest(request)
-
-        if (!session) {
-          return Response.json({ error: 'Unauthorized' }, { status: 401 })
-        }
-
         const { deleteFileRecord, getOrganizationForUser } = await import(
           '@/lib/storage'
         )
-        const organization = await getOrganizationForUser(session.user.id)
 
-        if (!organization) {
-          return Response.json({ error: 'No organization found.' }, { status: 409 })
-        }
-
-        const record = await deleteFileRecord(
-          params.fileId,
-          organization.organizationId
-        )
-
-        if (!record) {
-          return Response.json({ error: 'File not found.' }, { status: 404 })
-        }
-
-        return Response.json({ ok: true })
+        return handleDeleteFile({
+          fileId: params.fileId,
+          session,
+          dependencies: {
+            getOrganizationForUser,
+            deleteFileRecord,
+          },
+        })
       },
     },
   },

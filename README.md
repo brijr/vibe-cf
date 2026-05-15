@@ -9,6 +9,8 @@ pnpm install --frozen-lockfile
 pnpm dev
 pnpm db:generate
 pnpm db:migrate:local
+pnpm test
+pnpm test:smoke
 pnpm check
 pnpm deploy:dry-run
 pnpm deploy:staging:dry-run
@@ -20,7 +22,9 @@ pnpm deploy
 - `pnpm` is pinned through `packageManager`.
 - Dependency install build scripts are explicitly approved in `pnpm-workspace.yaml`.
 - `pnpm check` runs typecheck, tests, and production build.
+- `pnpm test:smoke` starts a real local Worker dev server, applies local D1 migrations, signs up a user, creates an organization, and verifies private R2 upload/download/delete.
 - CI installs from the lockfile, runs the full check, and validates Worker packaging with Wrangler dry-run.
+- CI also runs the local smoke test before Worker packaging dry-runs.
 - CI validates both production and staging Worker packages.
 - `/api/health` returns a no-store JSON health response.
 - Better Auth is mounted at `/api/auth/$`, with `/api/auth/session` as a smoke-test alias.
@@ -28,6 +32,13 @@ pnpm deploy
 - Private R2 uploads are brokered through authenticated server routes.
 - Global request middleware applies baseline security headers.
 - Wrangler has WIP account bindings, production/staging resources, source maps, and Workers observability enabled.
+
+## Testing
+
+- Unit tests live beside the module they cover as `*.test.ts`.
+- Keep Cloudflare-bound route code thin and move policy/handler logic into pure modules under `src/lib` so Vitest can cover it without a Worker runtime.
+- `pnpm test:smoke` applies local D1 migrations, starts a real local Vite/Worker dev server, verifies anonymous/protected routes, signs up a user, creates an organization, and exercises private R2 upload/download/delete through the API routes.
+- Use `SMOKE_PORT=4178 pnpm test:smoke` if the default smoke port is already in use.
 
 ## Cloudflare Environments
 
@@ -109,4 +120,6 @@ pnpm cf-typegen           # Refresh DB/R2 binding types
 5. Run `pnpm db:generate`, review SQL, then run the needed migration command.
 6. Guard authenticated routes with `src/lib/auth.functions.ts`.
 7. Access D1 only through `src/db/client.ts`; access R2 only through authenticated server routes.
-8. Add focused tests for pure logic and run `pnpm check`.
+8. Add focused unit tests for pure logic with `*.test.ts`.
+9. Run `pnpm test:smoke` when changing auth, D1, R2, or protected routes.
+10. Finish with `pnpm check` and the relevant Wrangler dry-run.

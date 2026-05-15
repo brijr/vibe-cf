@@ -1,5 +1,6 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 
+import { createSignInRedirectSearch } from '@/lib/auth-routing'
 import { getSession } from '@/lib/auth.functions'
 
 export const Route = createFileRoute('/_protected')({
@@ -9,9 +10,7 @@ export const Route = createFileRoute('/_protected')({
     if (!session) {
       throw redirect({
         to: '/sign-in',
-        search: {
-          redirect: location.href,
-        },
+        search: createSignInRedirectSearch(location.href),
       })
     }
 

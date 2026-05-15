@@ -8,6 +8,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 pnpm dev             # Start dev server at localhost:3000
 pnpm typecheck       # TypeScript validation
 pnpm test            # Vitest unit tests
+pnpm test:unit       # Explicit unit-test script
+pnpm test:smoke      # Local D1/R2/auth smoke test with real dev server
 pnpm build           # Production build
 pnpm check           # Typecheck + tests + production build
 pnpm db:generate     # Generate Drizzle SQL migrations into migrations/
@@ -55,7 +57,10 @@ TanStack Start starter deployed to Cloudflare Workers, using:
 - `src/lib/auth.ts` — Better Auth server config
 - `src/lib/auth-client.ts` — Browser auth client
 - `src/lib/auth.functions.ts` — Server session helpers and route guards
+- `src/lib/auth-routing.ts` — Pure auth redirect helpers
+- `src/lib/files-api.ts` — Pure file API handlers for testable route behavior
 - `src/lib/storage.ts` — Private R2 + D1 file metadata pattern
+- `src/lib/storage-policy.ts` — Pure upload/download policy helpers
 - `src/lib/email.ts` — Cloudflare Email scaffold with no-op fallback
 - `src/lib/health.ts` — Health response payload
 - `src/lib/security-headers.ts` — Baseline response security headers
@@ -87,6 +92,14 @@ Use `@/components/ds` for layouts:
 - Keep auth checks in `src/lib/auth.functions.ts` or small server-route helpers.
 - Generate migrations with Drizzle and apply them with Wrangler D1 migrations.
 - Use Better Auth organizations as the default tenant boundary.
+- Keep unit-testable policy and handler logic in pure modules before wiring it to Cloudflare bindings.
+
+## Testing
+
+- Put focused unit tests beside the code they cover as `*.test.ts`.
+- Test Cloudflare-adjacent behavior through pure service modules such as `src/lib/files-api.ts` and `src/lib/storage-policy.ts`.
+- Run `pnpm test:smoke` after touching auth, protected routing, D1-backed handlers, R2 storage, or Wrangler bindings.
+- If port `4177` is busy, run smoke with `SMOKE_PORT=4178 pnpm test:smoke`.
 
 ## Configuration
 
@@ -111,4 +124,6 @@ Use `@/components/ds` for layouts:
 5. Run `pnpm db:generate` and review the SQL in `migrations/`.
 6. Apply local migrations with `pnpm db:migrate:local`.
 7. Protect app surfaces with `getSession`/`ensureSession`.
-8. Run `pnpm check`, then the relevant Wrangler dry-run.
+8. Add focused unit tests beside the changed module.
+9. Run `pnpm test:smoke` for auth, D1, R2, or protected-route changes.
+10. Run `pnpm check`, then the relevant Wrangler dry-run.
