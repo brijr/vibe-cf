@@ -9,6 +9,11 @@ import tailwindcss from '@tailwindcss/vite'
 import { cloudflare } from '@cloudflare/vite-plugin'
 
 const config = defineConfig({
+  build: {
+    rollupOptions: {
+      external: [/^cloudflare:/, /^node:/],
+    },
+  },
   plugins: [
     devtools(),
     cloudflare({ viteEnvironment: { name: 'ssr' } }),

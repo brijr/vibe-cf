@@ -5,6 +5,7 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "vibe-cf",
+	"account_id": "4976e8a5df6887f41b287a83e6b5c18f",
 	"compatibility_date": "2026-05-15",
 	"compatibility_flags": [
 		"nodejs_compat"
@@ -16,14 +17,44 @@
 	},
 	"upload_source_maps": true,
 	"vars": {
-		"APP_ENV": "production"
+		"APP_ENV": "production",
+		"AUTH_EMAIL_FROM": ""
 	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "vibe-cf-prod-db",
+			"database_id": "45fd628e-ef60-4aff-b5f5-a84e829d3a58",
+			"migrations_dir": "migrations"
+		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "OBJECTS",
+			"bucket_name": "vibe-cf-prod-objects"
+		}
+	],
 	"env": {
 		"staging": {
 			"workers_dev": true,
 			"vars": {
-				"APP_ENV": "staging"
-			}
+				"APP_ENV": "staging",
+				"AUTH_EMAIL_FROM": ""
+			},
+			"d1_databases": [
+				{
+					"binding": "DB",
+					"database_name": "vibe-cf-staging-db",
+					"database_id": "abfda88b-b61b-4469-a178-6625e37e90dc",
+					"migrations_dir": "migrations"
+				}
+			],
+			"r2_buckets": [
+				{
+					"binding": "OBJECTS",
+					"bucket_name": "vibe-cf-staging-objects"
+				}
+			]
 		}
 	}
 	/**

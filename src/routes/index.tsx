@@ -1,6 +1,7 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 
 import { Container, Main } from '@/components/ds'
+import { Button } from '@/components/ui/button'
 import {
   APP_DESCRIPTION,
   APP_REPOSITORY_URL,
@@ -26,7 +27,16 @@ function Home() {
           ))}
         </ul>
 
-        <div className="mt-12 flex gap-6 text-sm">
+        <div className="mt-12 flex flex-wrap gap-2">
+          <Button asChild>
+            <Link to="/dashboard">Dashboard</Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link to="/sign-in">Sign in</Link>
+          </Button>
+        </div>
+
+        <div className="mt-8 flex gap-6 text-sm">
           <a
             href={APP_REPOSITORY_URL}
             className="text-foreground underline underline-offset-4 hover:no-underline"
