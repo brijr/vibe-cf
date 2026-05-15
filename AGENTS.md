@@ -50,7 +50,7 @@ TanStack Start starter deployed to Cloudflare Workers, using:
 
 ### Key Directories
 
-- `src/components/ds.tsx` — Layout design system (Main, Container, Center, Section, Nav, Prose)
+- `src/components/ds.tsx` — Single-file layout/prose design system (`cn`, Main, Container, Center, Section, Nav, Prose)
 - `src/components/ui/` — shadcn/ui components
 - `src/db/schema.ts` — Drizzle schema for Better Auth, orgs, and file metadata
 - `src/db/client.ts` — Single D1/Drizzle access point
@@ -64,7 +64,7 @@ TanStack Start starter deployed to Cloudflare Workers, using:
 - `src/lib/email.ts` — Cloudflare Email scaffold with no-op fallback
 - `src/lib/health.ts` — Health response payload
 - `src/lib/security-headers.ts` — Baseline response security headers
-- `src/lib/utils.ts` — Utility functions (cn)
+- `src/lib/utils.ts` — shadcn-compatible utility functions
 - `src/start.ts` — Global TanStack Start request middleware
 - `src/styles.css` — Global styles + theme variables (stone oklch palette)
 
@@ -77,9 +77,17 @@ Use `@/components/ds` for layouts:
 | `Main`      | Main content area |
 | `Container` | Centered content (`size="2xl"\|"3xl"\|"4xl"\|"5xl"`) |
 | `Center`    | Full-screen centered (error pages) |
-| `Section`   | Vertical section with padding |
-| `Nav`       | Navigation with inner container |
-| `Prose`     | Rich text styling (`isArticle`, `isSpaced` props) |
+| `Section`   | Restrained vertical section padding |
+| `Nav`       | Navigation with inner container; use `size` to match `Container` width |
+| `Prose`     | Core rich text styling (`isArticle`, `isSpaced` props) |
+
+Design-system rules:
+
+- Keep `src/components/ds.tsx` pure: layout primitives, prose, and its own first-exported `cn()`.
+- Do not add app UI primitives such as auth shells, fields, cards, or panels until repetition proves the need.
+- Keep `Nav` and `Container` on the same size scale so headers align with page content.
+- Use `Prose` for rendered content and AI/docs output, not app forms or dashboards.
+- Keep shadcn components using `@/lib/utils`; do not churn those imports just because `ds.tsx` also exports `cn`.
 
 ## Conventions
 

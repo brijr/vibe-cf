@@ -40,6 +40,16 @@ pnpm deploy
 - `pnpm test:smoke` applies local D1 migrations, starts a real local Vite/Worker dev server, verifies anonymous/protected routes, signs up a user, creates an organization, and exercises private R2 upload/download/delete through the API routes.
 - Use `SMOKE_PORT=4178 pnpm test:smoke` if the default smoke port is already in use.
 
+## Design System
+
+`src/components/ds.tsx` is the single-file layout/prose contract for agents and humans. It exports `cn`, `Main`, `Section`, `Container`, `Center`, `Nav`, and `Prose`.
+
+- Keep it pure: no auth shells, form fields, panels, data fetching, hooks, or app state.
+- `Container` and `Nav` share the same `size` scale so page content and navigation can align exactly.
+- `Section` intentionally uses restrained padding for app-first screens.
+- `Prose` covers core rendered content and AI/docs output; do not wrap app UI in it.
+- shadcn/ui components should keep using `@/lib/utils`.
+
 ## Cloudflare Environments
 
 The top-level Wrangler config is production and deploys with:
