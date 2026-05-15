@@ -3,3 +3,5 @@ allowBuilds:
   msw: true
   sharp: true
   workerd: true
+overrides:
+  '@esbuild-kit/core-utils@3.3.2>esbuild': 0.25.12
