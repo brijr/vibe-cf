@@ -64,6 +64,12 @@ This repo is pinned to the WIP account:
 
 The buckets are private. Do not add an R2 public bucket domain unless a feature explicitly needs public assets.
 
+Detailed operational notes live in:
+
+- `docs/cloudflare-resources.md`
+- `docs/auth.md`
+- `docs/data-and-storage.md`
+
 ## Auth And Data
 
 Better Auth uses email/password plus the organization plugin. GitHub and Google OAuth are optional: add `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, `GOOGLE_CLIENT_ID`, and `GOOGLE_CLIENT_SECRET` as Worker secrets when ready.
