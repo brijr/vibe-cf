@@ -147,6 +147,31 @@ describe('private files API handlers', () => {
     })
   })
 
+  it('returns upload validation errors as JSON for the dashboard', async () => {
+    const form = new FormData()
+    form.set('file', new Blob(['hello'], { type: 'text/plain' }), 'brief.txt')
+
+    const response = await handleUploadFile({
+      request: new Request('http://local.test/api/files', {
+        method: 'POST',
+        body: form,
+      }),
+      session,
+      dependencies: createDependencies({
+        createFileObject: async () => {
+          throw new Response('Upload exceeds the 10 MB starter limit.', {
+            status: 413,
+          })
+        },
+      }),
+    })
+
+    expect(response.status).toBe(413)
+    expect(await response.json()).toEqual({
+      error: 'Upload exceeds the 10 MB starter limit.',
+    })
+  })
+
   it('serves downloads only after organization ownership is checked', async () => {
     const response = await handleDownloadFile({
       fileId: 'file_1',

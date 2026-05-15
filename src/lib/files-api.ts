@@ -148,7 +148,7 @@ export async function handleUploadFile({
     return Response.json({ file }, { status: 201 })
   } catch (error) {
     if (error instanceof Response) {
-      return error
+      return normalizeErrorResponse(error)
     }
 
     throw error
@@ -229,4 +229,19 @@ export async function handleDeleteFile({
 
 function stringValue(value: FormDataEntryValue | null) {
   return typeof value === 'string' && value.length > 0 ? value : undefined
+}
+
+async function normalizeErrorResponse(response: Response) {
+  const contentType = response.headers.get('content-type') ?? ''
+
+  if (contentType.includes('application/json')) {
+    return response
+  }
+
+  const message = await response.text()
+
+  return Response.json(
+    { error: message || 'Upload failed.' },
+    { status: response.status }
+  )
 }
